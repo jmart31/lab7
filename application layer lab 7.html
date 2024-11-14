@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<header>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript & API's</title>
+    <style>
+          
+        body {
+            background-color: lightgray;
+            font-family: Arial, sans-serif;  /* Optional: Set a font for readability */
+            color: #333;  /* Optional: Text color for contrast */
+            margin: 0;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+
+<body class="mx-auto" style="width: 400px;">
+<h1>Lab 7 </h1>
+<h1>Application Layer </h1>
+
+    <img src="https://www.itprc.com/wp-content/uploads/2008/01/How-the-Application-Layer-Works.jpg" 
+         alt="Diagram of how the application layer works" 
+         style="width:100%; max-width:600px; height:auto;">
+<br></br>
+
+
+ <h2>Your Public IP Address:</h2>
+    <p id="ipAddress">10.0.92.246</p>
+   .
+<h2>You are from:</h2>
+<p >The city you're from is</p>
+<p id="city"></p>
+<p id=>The country you're from is:</p>
+<p id="country"></p>
+<h2>The weather there is:</h2>
+<p id="weather"></p>
+<p id="weather">cloudy</p>
+<img src="https://images.freeimages.com/images/large-previews/e83/broken-clouds-1537880.jpg" 
+      alt="application layer " 
+         style="width:100%; max-width:600px; height:auto;">
+
+
+
+
+<script>
+ 
+
+
+async function loadLocation() {
+  const myIpAddress = await fetch("https://api.ipify.org?format=json");
+  
+  const ipAddress = await myIpAddress.json();
+  console.log("my IP Address is: ", ipAddress);
+  
+  
+
+  const response = await fetch("https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/?ip="+ipAddress.ip, {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
+		"x-rapidapi-key": "044e648b19mshfece6f865ead2b3p1a1a7ajsn036a4345378f"
+	}
+});
+  const location = await response.json();
+
+ document.getElementById("city").innerHTML = location.city;
+ document.getElementById("country").innerHTML = location.country;  
+ document.getElementById("isp").innerHTML = location.isp;  
+
+  console.log(location); 
+
+
+  const responseW = await fetch("https://community-open-weather-map.p.rapidapi.com/find?q="+location.city+"&units=imperial", {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
+		"x-rapidapi-key": "044e648b19mshfece6f865ead2b3p1a1a7ajsn036a4345378f"
+	}
+});
+
+  const weather = await responseW.json();
+
+ document.getElementById("weather").innerHTML = weather.list[0].weather[0].description;
+ 
+
+  console.log(weather.list[0].weather[0].main); 
+
+}
+
+
+
+
+loadLocation();
+
+
+</script>
+
+</body>
+</html>
